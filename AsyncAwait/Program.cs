@@ -1,0 +1,28 @@
+﻿ using HR.model;
+using HR.services;
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        Console.WriteLine("HR System Started...\n");
+
+        HROperationService service = new HROperationService();
+
+        // Async call to fetch employees
+        var employees = await service.GetEmployeesAsync();
+
+        Console.WriteLine("Employees Loaded:");
+        employees.ForEach(e => Console.WriteLine(e));
+
+        Console.WriteLine("\nCalculating bonus asynchronously...");
+        double bonus = await service.CalculateBonusAsync(employees[0]);
+        Console.WriteLine($"Bonus for {employees[0].name}: {bonus}");
+
+        await service.SaveEmployeeAsync(employees[0]);
+
+        Console.WriteLine("\nHR System Completed.");
+    }
+}
